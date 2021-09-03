@@ -1,22 +1,11 @@
-import './App.css';
-import styled from 'styled-components';
 import RecipeList from './RecipeList';
 
+import styles from './styles.js'
 
-const AppWrapper = styled.section`
-  padding: 4em;
-  background: ivory;
-`;
-
-const SectionWrapper = styled.section`
-`;
-
-const Title = styled.h1`
-  font-size: 1.5em;
-  text-align: center;
-  color: teal;
-`;
-
+const {
+  AppWrapper,
+  Title,
+} = styles;
 
 // Retrieve payload from Django backend
 const payload = [
@@ -24,31 +13,60 @@ const payload = [
     id: 1,
     name: 'Cabbage Soup',
     description: 'A soup made from cabbage',
+    ingredients: [
+      {
+        id: 1,
+        name: 'Cabbage'
+      },
+      {
+        id: 2,
+        name: 'water'
+      },
+    ],
   },
   {
     id: 2,
     name: 'Butter Pie',
     description: 'A pie made with butter',
+    ingredients: [
+      {
+        id: 1,
+        name: 'Pastry'
+      },
+      {
+        id: 2,
+        name: 'Potatoes'
+      },
+      {
+        id: 3,
+        name: 'Butter'
+      },
+    ],
   },
   {
     id: 3,
     name: 'Prawn salad',
     description: 'A salad made of prawns',
+    ingredients: [
+      {
+        id: 1,
+        name: 'Prawns'
+      },
+      {
+        id: 2,
+        name: 'Marie Rose sauce'
+      }
+    ],
   }
 ];
 
 
 function App() {
+
   return (
     <AppWrapper className="App">
       <Title>Recipes</Title>
-      <SectionWrapper>
-        <RecipeList recipes={payload}/>
-      </SectionWrapper>
-      <SectionWrapper>
-        <h2>{}</h2>
-      </SectionWrapper>
-
+      <RecipeList recipes={payload}/>
     </AppWrapper>
   );
 }

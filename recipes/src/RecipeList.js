@@ -1,50 +1,65 @@
-import styled from 'styled-components';
+import styles from './styles.js'
+
+const {
+  Button,
+  RecipeTable,
+  RecipeTableRow,
+  RecipeTableNameLabel,
+  RecipeTableDescriptionLabel,
+  RecipeTableNameItem,
+  RecipeTableDescriptionItem,
+  RecipeDetailContainer,
+  RecipeDetailName,
+  RecipeDetailDescription,
+  IngredientListBox,
+  IngredientListItem,
+  IngredientListContainer,
+  SectionWrapper,
+} = styles;
 
 
-const Button = styled.button`
-  display: inline-block;
-  color: palevioletred;
-  font-size: 1em;
-  margin: 1em;
-  padding: 0.25em 1em;
-  border: 2px solid palevioletred;
-  border-radius: 3px;
-  display: block;
-`;
+function IngredientList(props) {
+  if(!props.ingredients) {
+    console.log('no ingredients')
+    return <IngredientListBox/>;
+  }
+  console.log(`ingredients: ${JSON.stringify(props.ingredients)}`)
+  const list = props.ingredients.map((ingredient) =>
+    <IngredientListItem key={ingredient.id}>{ingredient.name}</IngredientListItem>
+  )
+  return <IngredientListBox>
+    <IngredientListContainer>
+      {list}
+    </IngredientListContainer>
+  </IngredientListBox>
+};
 
-const RecipeTable = styled.table`
-  border-radius: 3px;
-  border: 2px solid #8d64ed;
-  width: 100%;
-  margin: 20px auto;
-  table-layout: fixed;
-  border-collapse: collapse;
-`
 
-const RecipeTableRow = styled.tr`
-  border: 2px solid #a5bce7;
-`;
+function RecipeDetail(props) {
+  const selected = props.selected
+    ? parseInt(props.selected)
+    : undefined;
+  console.log(`selected: ${JSON.stringify(selected)}`)
 
-const RecipeTableLabel = styled.th`
-  border: 2px solid lavender;
-  background: aliceblue;
-  border-collapse: collapse;
-`;
+  const recipe = props.recipes.find(e => (e.id === selected));
+  console.log(`recipe: ${JSON.stringify(recipe)}`)
 
-const RecipeTableItem = styled.td`
-  border: 2px solid lavender;
-  border-collapse: collapse;
-  padding: 2px;
-  text-align: center;
-`;
+  return recipe
+    ?<RecipeDetailContainer>
+      <RecipeDetailName>{recipe.name}</RecipeDetailName>
+      <RecipeDetailDescription>{recipe.description}</RecipeDetailDescription>
+      <IngredientList ingredients={recipe.ingredients}/>
+    </RecipeDetailContainer>
+    : <RecipeDetailContainer/>
+};
 
 
 function RecipeListItem(props) {
   return <RecipeTableRow>
-    <RecipeTableItem>
-      <Button as="a" href="#">{props.name}</Button>
-    </RecipeTableItem>
-    <RecipeTableItem>{props.description}</RecipeTableItem>
+    <RecipeTableNameItem>
+      <Button as="a" href="#" >{props.name}</Button>
+    </RecipeTableNameItem>
+    <RecipeTableDescriptionItem>{props.description}</RecipeTableDescriptionItem>
   </RecipeTableRow>;
 };
 
@@ -54,17 +69,16 @@ function RecipeList(props) {
     <RecipeListItem key={recipe.id} name={recipe.name} description={recipe.description}/>
   );
 
-  return <RecipeTable>
-    <thead>
+  return <SectionWrapper>
+    <RecipeTable>
       <RecipeTableRow>
-        <RecipeTableLabel>Name</RecipeTableLabel>
-        <RecipeTableLabel>Description</RecipeTableLabel>
+        <RecipeTableNameLabel>Name</RecipeTableNameLabel>
+        <RecipeTableDescriptionLabel>Description</RecipeTableDescriptionLabel>
       </RecipeTableRow>
-    </thead>
-    <tbody>
       {listItems}
-    </tbody>
-  </RecipeTable>;
+    </RecipeTable>
+    <RecipeDetail recipes={props.recipes} selected="2"/>
+  </SectionWrapper>;
 };
 
 export default RecipeList;
