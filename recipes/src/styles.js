@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import Creatable from 'react-select/creatable';
+
 const AppWrapper = styled.section`
   padding: 4em;
   background: ivory;
@@ -41,7 +43,7 @@ const RecipeTableItem = styled.div`
   border: 2px solid lavender;
   border-collapse: collapse;
   padding: 2px;
-  text-align: center;
+  text-align: left;
 `;
 
 const RecipeTableNameItem = styled(RecipeTableItem)`
@@ -59,27 +61,32 @@ const RecipeTableButtonItem = styled(RecipeTableItem)`
 const RecipeDetailContainer = styled.div`
   display: flex;
   flex-flow: column wrap;
+  text-align: left;
 `;
 
 const RecipeDetailName = styled.h2`
-  text-align: center;
+  text-align: left;
   color: mediumslateblue;
 `;
 
 const RecipeDetailDescription = styled.p`
-  text-align: center;
 `;
 
 const IngredientListBox = styled.div`
-  text-align: center;
-`
+  text-align: left;
+`;
 
-const IngredientListContainer = styled.ol`
+const IngredientListContainer = styled.ul`
   list-style-type: none;
-`
+`;
 
 const IngredientListItem = styled.li`
-`
+`;
+
+const IngredientListSelect = styled(Creatable)`
+  flex: 0 0  200px
+`;
+
 
 const styles = {
   AppWrapper,
@@ -97,6 +104,7 @@ const styles = {
   IngredientListBox,
   IngredientListItem,
   IngredientListContainer,
+  IngredientListSelect,
 };
 
 export default styles;

@@ -50,6 +50,7 @@ function RecipeList(props) {
 
       console.log(`result = ${JSON.stringify(result)}`)
 
+      setSelected(undefined);
       setRecipes(result.data);
     }
 

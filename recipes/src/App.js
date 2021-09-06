@@ -1,4 +1,5 @@
 import RecipeList from './RecipeList';
+import RecipeForm from './RecipeForm';
 
 import styles from './styles.js'
 import React from "react";
@@ -17,6 +18,7 @@ function App() {
       <Title>Recipes</Title>
       <Button href="#" onClick={() => console.log('Add button clicked')}>Add recipe</Button>
       <RecipeList recipes=""/>
+      <RecipeForm recipe=""/>
     </AppWrapper>
   );
 }
