@@ -6,10 +6,9 @@ const {
   Button,
   RecipeTable,
   RecipeTableRow,
-  RecipeTableNameLabel,
-  RecipeTableDescriptionLabel,
   RecipeTableNameItem,
   RecipeTableDescriptionItem,
+  RecipeTableButtonItem,
   RecipeDetailContainer,
   RecipeDetailName,
   RecipeDetailDescription,
@@ -81,7 +80,15 @@ function RecipeList(props) {
       <RecipeTableNameItem>
         <Button as="a" href="#" onClick={() => setSelected(props.id)}>{props.name}</Button>
       </RecipeTableNameItem>
-      <RecipeTableDescriptionItem>{props.description}</RecipeTableDescriptionItem>
+      <RecipeTableDescriptionItem>
+        {props.description}
+      </RecipeTableDescriptionItem>
+      <RecipeTableButtonItem>
+        <Button href="#" onClick={() => console.log('Edit button clicked')}>Edit Recipe</Button>
+      </RecipeTableButtonItem>
+      <RecipeTableButtonItem>
+        <Button href="#" onClick={() => console.log('Delete button clicked')}>Delete Recipe</Button>
+      </RecipeTableButtonItem>
     </RecipeTableRow>;
   };
 
@@ -91,10 +98,6 @@ function RecipeList(props) {
 
   return <SectionWrapper>
     <RecipeTable>
-      <RecipeTableRow>
-        <RecipeTableNameLabel>Name</RecipeTableNameLabel>
-        <RecipeTableDescriptionLabel>Description</RecipeTableDescriptionLabel>
-      </RecipeTableRow>
       {listItems}
     </RecipeTable>
     <RecipeDetail recipes={recipes} selected=""/>

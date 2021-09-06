@@ -16,19 +16,16 @@ const Title = styled.h1`
 
 const Button = styled.button`
   display: inline-block;
-  color: palevioletred;
+  color: royalblue;
   font-size: 1em;
-  margin: 1em;
-  padding: 0.25em 1em;
-  border: 2px solid palevioletred;
-  border-radius: 3px;
+  padding: 0.25em 0.25em;
   display: block;
 `;
 
 const RecipeTable = styled.div`
   border-radius: 3px;
   border: 2px solid #8d64ed;
-  width: 80%;
+  width: 100%;
   margin: 20px auto;
   display: flex;
   flex-flow: column wrap;
@@ -38,20 +35,6 @@ const RecipeTableRow = styled.div`
   border: 2px solid #a5bce7;
   display: flex;
   flex-direction: row;
-`;
-
-const RecipeTableLabel = styled.div`
-  border: 2px solid lavender;
-  background: aliceblue;
-  border-collapse: collapse;
-`;
-
-const RecipeTableNameLabel = styled(RecipeTableLabel)`
-  flex: 0 0 200px
-`;
-
-const RecipeTableDescriptionLabel = styled(RecipeTableLabel)`
-  flex: 2 1 auto
 `;
 
 const RecipeTableItem = styled.div`
@@ -67,6 +50,10 @@ const RecipeTableNameItem = styled(RecipeTableItem)`
 
 const RecipeTableDescriptionItem = styled(RecipeTableItem)`
   flex: 2 1 auto
+`;
+
+const RecipeTableButtonItem = styled(RecipeTableItem)`
+  flex: 0 0  auto
 `;
 
 const RecipeDetailContainer = styled.div`
@@ -101,10 +88,9 @@ const styles = {
   Button,
   RecipeTable,
   RecipeTableRow,
-  RecipeTableNameLabel,
-  RecipeTableDescriptionLabel,
   RecipeTableNameItem,
   RecipeTableDescriptionItem,
+  RecipeTableButtonItem,
   RecipeDetailContainer,
   RecipeDetailName,
   RecipeDetailDescription,
