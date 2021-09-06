@@ -1,4 +1,5 @@
-import React, { useState } from 'react';import './App.css';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';import './App.css';
 import styles from './styles.js'
 
 const {
@@ -17,6 +18,9 @@ const {
   IngredientListContainer,
   SectionWrapper,
 } = styles;
+
+
+const RECIPE_LIST_URL = '/api/recipe/recipes/';
 
 
 function IngredientList(props) {
@@ -38,21 +42,37 @@ function IngredientList(props) {
 
 function RecipeList(props) {
 
-  const [selected, setSelected] = useState(2);
+  const [selected, setSelected] = useState(undefined);
+  const [recipes, setRecipes] = useState([]);
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      const result = await axios.get(RECIPE_LIST_URL);
+
+      console.log(`result = ${JSON.stringify(result)}`)
+
+      setRecipes(result.data);
+    }
+
+    fetchRecipes();
+  }, []);
 
   function RecipeDetail(props) {
     console.log(`selected: ${JSON.stringify(selected)}`)
 
-    const recipe = props.recipes.find(e => (e.id === selected));
+    if(!recipes || (selected === undefined)) {
+      return <RecipeDetailContainer/>;
+    }
+
+    const recipe = recipes.find(e => (e.id === selected));
+
     console.log(`recipe: ${JSON.stringify(recipe)}`)
 
-    return recipe
-      ?<RecipeDetailContainer>
-        <RecipeDetailName>{recipe.name}</RecipeDetailName>
-        <RecipeDetailDescription>{recipe.description}</RecipeDetailDescription>
-        <IngredientList ingredients={recipe.ingredients}/>
-      </RecipeDetailContainer>
-      : <RecipeDetailContainer/>
+    return <RecipeDetailContainer>
+      <RecipeDetailName>{recipe.name}</RecipeDetailName>
+      <RecipeDetailDescription>{recipe.description}</RecipeDetailDescription>
+      <IngredientList ingredients={recipe.ingredients}/>
+    </RecipeDetailContainer>;
   };
 
   function RecipeListItem(props) {
@@ -65,7 +85,7 @@ function RecipeList(props) {
     </RecipeTableRow>;
   };
 
-  const listItems = props.recipes.map((recipe) =>
+  const listItems = recipes.map((recipe) =>
     <RecipeListItem key={recipe.id} id={recipe.id} name={recipe.name} description={recipe.description}/>
   );
 
@@ -77,7 +97,7 @@ function RecipeList(props) {
       </RecipeTableRow>
       {listItems}
     </RecipeTable>
-    <RecipeDetail recipes={props.recipes} selected="2"/>
+    <RecipeDetail recipes={recipes} selected=""/>
   </SectionWrapper>;
 };
 
