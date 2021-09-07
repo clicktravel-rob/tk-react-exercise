@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import Creatable from 'react-select/creatable';
 
-import styles from "./styles"
+import styles from "../styles"
 import axios from "axios";
+import useRecipeDb from "./useRecipeApi";
 
 const {
-  SectionWrapper
+  ComponentWrapper
 } = styles;
 
 const RECIPE_LIST_URL = '/api/recipe/recipes/';
@@ -26,6 +27,8 @@ function RecipeForm(props) {
   const [description, setDescription] = useState(initialDescription);
   const [ingredients, setIngredients] = useState(initialIngredients);
 
+  const [, reloadRecipes] = useRecipeDb();
+
   async function postRecipe(evt) {
     evt.preventDefault();
 
@@ -39,8 +42,9 @@ function RecipeForm(props) {
 
     const result = await axios.post(RECIPE_LIST_URL, recipeUpdate);
 
-    console.log(`result = ${JSON.stringify(result)}`)
+    console.log(`POST recipes result = ${JSON.stringify(result)}`)
 
+    reloadRecipes();
   }
 
   function onIngredientsChange(newValue, actionMeta) {
@@ -66,7 +70,7 @@ function RecipeForm(props) {
     label: ingredient.name,
   }));
 
-  return <SectionWrapper>
+  return <ComponentWrapper>
     <h2>{title}</h2>
     <form onSubmit={postRecipe}>
       <ul>
@@ -93,7 +97,7 @@ function RecipeForm(props) {
         </li>
       </ul>
     </form>
-  </SectionWrapper>
+  </ComponentWrapper>
 }
 
-export default RecipeForm
+export default RecipeForm;

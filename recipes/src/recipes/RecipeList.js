@@ -1,6 +1,7 @@
-import axios from 'axios';
-import React, { useState, useEffect } from 'react';import './App.css';
-import styles from './styles.js'
+import React, { useState } from 'react';
+import '../App.css';
+import styles from '../styles.js'
+import useRecipeDb from './useRecipeApi.js'
 
 const {
   Button,
@@ -15,11 +16,8 @@ const {
   IngredientListBox,
   IngredientListItem,
   IngredientListContainer,
-  SectionWrapper,
+  ComponentWrapper,
 } = styles;
-
-
-const RECIPE_LIST_URL = '/api/recipe/recipes/';
 
 
 function IngredientList(props) {
@@ -42,20 +40,10 @@ function IngredientList(props) {
 function RecipeList(props) {
 
   const [selected, setSelected] = useState(undefined);
-  const [recipes, setRecipes] = useState([]);
 
-  useEffect(() => {
-    const fetchRecipes = async () => {
-      const result = await axios.get(RECIPE_LIST_URL);
-
-      console.log(`result = ${JSON.stringify(result)}`)
-
-      setSelected(undefined);
-      setRecipes(result.data);
-    }
-
-    fetchRecipes();
-  }, []);
+  const [{
+    recipes,
+  }] = useRecipeDb();
 
   function RecipeDetail(props) {
     console.log(`selected: ${JSON.stringify(selected)}`)
@@ -97,12 +85,12 @@ function RecipeList(props) {
     <RecipeListItem key={recipe.id} id={recipe.id} name={recipe.name} description={recipe.description}/>
   );
 
-  return <SectionWrapper>
+  return <ComponentWrapper>
     <RecipeTable>
       {listItems}
     </RecipeTable>
     <RecipeDetail recipes={recipes} selected=""/>
-  </SectionWrapper>;
+  </ComponentWrapper>;
 };
 
 export default RecipeList;

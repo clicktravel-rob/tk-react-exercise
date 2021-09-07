@@ -1,25 +1,16 @@
-import RecipeList from './RecipeList';
-import RecipeForm from './RecipeForm';
-
-import styles from './styles.js'
 import React from "react";
+import RecipeComponent from './recipes/RecipeComponent';
+import styles from './styles';
 
 const {
-  AppWrapper,
-  Button,
-  Title,
+  StyledApp
 } = styles;
 
-
 function App() {
-
   return (
-    <AppWrapper className="App">
-      <Title>Recipes</Title>
-      <Button href="#" onClick={() => console.log('Add button clicked')}>Add recipe</Button>
-      <RecipeList recipes=""/>
-      <RecipeForm recipe=""/>
-    </AppWrapper>
+    <StyledApp className="App">
+      <RecipeComponent/>
+    </StyledApp>
   );
 }
 

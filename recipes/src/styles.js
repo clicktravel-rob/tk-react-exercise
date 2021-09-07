@@ -2,12 +2,12 @@ import styled from 'styled-components';
 
 import Creatable from 'react-select/creatable';
 
-const AppWrapper = styled.section`
+const StyledApp = styled.section`
   padding: 4em;
   background: ivory;
 `;
 
-const SectionWrapper = styled.section`
+const ComponentWrapper = styled.section`
 `;
 
 const Title = styled.h1`
@@ -89,8 +89,8 @@ const IngredientListSelect = styled(Creatable)`
 
 
 const styles = {
-  AppWrapper,
-  SectionWrapper,
+  StyledApp,
+  ComponentWrapper,
   Title,
   Button,
   RecipeTable,
