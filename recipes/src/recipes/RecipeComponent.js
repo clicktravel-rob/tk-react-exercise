@@ -4,7 +4,8 @@ import styles from '../styles';
 import RecipeList from './RecipeList';
 import RecipeDetail from './RecipeDetail';
 import RecipeForm from './RecipeForm';
-import axios from "axios";
+
+import recipesApi from "./recipesApi";
 
 
 const {
@@ -13,8 +14,9 @@ const {
   Title,
 } = styles;
 
-
-const RECIPE_LIST_URL = '/api/recipe/recipes/';
+const {
+  getRecipes: getRecipesFromDb,
+} = recipesApi;
 
 
 function RecipeComponent() {
@@ -24,18 +26,21 @@ function RecipeComponent() {
   const [updating, setUpdating] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
+  const recipeDbUpdated = () => {
+    setUpdating(false);
+    setRefreshing(true);
+  }
 
   useEffect(() => {
     let cancelled = false;
 
     const getRecipes = async () => {
       try {
-        const response = await axios.get(RECIPE_LIST_URL);
+        const response = await getRecipesFromDb();
         console.log(`GET recipes response = ${JSON.stringify(response)}`);
 
         if(!cancelled) {
           setSelected(false);
-          setUpdating(false);
           setRecipes(response.data);
         }
       } catch(e) {
@@ -47,6 +52,11 @@ function RecipeComponent() {
         }
       }
 
+      if(!cancelled) {
+        setUpdating(false);
+        setRefreshing(false);
+      }
+
       console.log(`GET recipes DONE ${cancelled? '(after cancellation)':''}`);
     }
 
@@ -55,16 +65,16 @@ function RecipeComponent() {
     return (() => {cancelled = true;});
   }, [refreshing]);
 
-  console.log(`RecipeComponent selected: ${selected} updating: ${updating}`);
+  console.log(`RecipeComponent selected: ${selected} updating: ${updating} refreshing: ${refreshing}`);
 
   return (
     <ComponentWrapper>
       <Title>Recipes</Title>
       <Button href="#" onClick={(e) => setUpdating(true)}>Add recipe</Button>
-      <RecipeList recipes={recipes} setSelected={setSelected} setUpdating={setUpdating}/>
+      <RecipeList recipes={recipes} setSelected={setSelected} setUpdating={setUpdating} recipeDbUpdated={recipeDbUpdated}/>
       {
         updating &&
-        <RecipeForm recipes={recipes} updating={updating} setUpdating={setUpdating} setRefreshing={setRefreshing}/>
+        <RecipeForm recipes={recipes} updating={updating} recipeDbUpdated={recipeDbUpdated} setUpdating={setUpdating}/>
       }
       {
         selected && !updating &&

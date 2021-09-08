@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import Creatable from 'react-select/creatable';
 
 import styles from '../styles';
 import findRecipe from "./findRecipe";
+import recipesApi from "./recipesApi";
+
 
 const {
   ComponentWrapper
 } = styles;
+
+const {
+  addRecipe,
+  updateRecipe,
+} = recipesApi;
 
 const RECIPE_LIST_URL = '/api/recipe/recipes/';
 
@@ -16,8 +22,8 @@ function RecipeForm(props) {
   const {
     recipes,
     updating,
+    recipeDbUpdated,
     setUpdating,
-    setRefreshing
   } = props;
 
   const recipe = findRecipe({recipes, id: updating});
@@ -46,6 +52,7 @@ function RecipeForm(props) {
     evt.preventDefault();
 
     const recipeUpdate = {
+      id,
       name,
       description,
       ingredients,
@@ -54,13 +61,12 @@ function RecipeForm(props) {
     console.log(`Submitting ${isExistingRecipe? 'existing' : 'new'} recipe ${JSON.stringify(recipeUpdate)}`)
 
     const result = (isExistingRecipe
-      ? await axios.put(`${RECIPE_LIST_URL}${id}/`, recipeUpdate)
-      : await axios.post(RECIPE_LIST_URL, recipeUpdate));
+      ? await updateRecipe(recipeUpdate)
+      : await addRecipe(recipeUpdate));
 
     console.log(`update recipes result = ${JSON.stringify(result)}`)
 
-    setUpdating(false);
-    setRefreshing(true);
+    recipeDbUpdated();
   }
 
   function onIngredientsChange(newValue, actionMeta) {

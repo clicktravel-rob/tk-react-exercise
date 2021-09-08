@@ -1,7 +1,12 @@
 import React from 'react';
 
 import '../App.css';
-import styles from '../styles'
+import styles from '../styles';
+import recipesApi from './recipesApi';
+
+const {
+  deleteRecipe: deleteFromDb,
+} = recipesApi;
 
 const {
   Button,
@@ -20,9 +25,16 @@ function RecipeList(props) {
     recipes,
     setSelected,
     setUpdating,
+    recipeDbUpdated
   } = props;
 
   console.log(`RecipeList recipes: ${JSON.stringify(recipes)}`)
+
+  async function deleteRecipe(id) {
+    console.log(`deleting recipe ${id}`);
+    await deleteFromDb(id);
+    recipeDbUpdated();
+  }
 
   function RecipeListItem(props) {
     return <RecipeTableRow>
@@ -38,7 +50,7 @@ function RecipeList(props) {
         <Button href="#" onClick={() => setUpdating(props.id)}>Edit Recipe</Button>
       </RecipeTableButtonItem>
       <RecipeTableButtonItem>
-        <Button href="#" onClick={() => console.log('Delete button clicked')}>Delete Recipe</Button>
+        <Button href="#" onClick={() => deleteRecipe(props.id)}>Delete Recipe</Button>
       </RecipeTableButtonItem>
     </RecipeTableRow>;
   };
