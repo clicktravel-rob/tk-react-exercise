@@ -15,10 +15,7 @@ const {
   updateRecipe,
 } = recipesApi;
 
-const RECIPE_LIST_URL = '/api/recipe/recipes/';
-
 function RecipeForm(props) {
-  console.log('RecipeForm rendering')
   const {
     recipes,
     updating,
@@ -40,8 +37,6 @@ function RecipeForm(props) {
   const [description, setDescription] = useState(initialDescription);
   const [ingredients, setIngredients] = useState(initialIngredients);
 
-  console.log(`recipe state - name: ${name} description: ${description} ingredients: ${JSON.stringify(ingredients)}`)
-
   const isExistingRecipe =  (id !== undefined) && (id !== null);
 
   if(updating === false) {
@@ -58,22 +53,16 @@ function RecipeForm(props) {
       ingredients,
     };
 
-    console.log(`Submitting ${isExistingRecipe? 'existing' : 'new'} recipe ${JSON.stringify(recipeUpdate)}`)
-
-    const result = (isExistingRecipe
-      ? await updateRecipe(recipeUpdate)
-      : await addRecipe(recipeUpdate));
-
-    console.log(`update recipes result = ${JSON.stringify(result)}`)
+    if(isExistingRecipe) {
+      await updateRecipe(recipeUpdate);
+    } else {
+      await addRecipe(recipeUpdate);
+    }
 
     recipeDbUpdated();
   }
 
   function onIngredientsChange(newValue, actionMeta) {
-    console.log(`Value Changed:
-      newValue: ${JSON.stringify(newValue)}
-      action: ${JSON.stringify(actionMeta.action)}`);
-
     const replacementIngredients = newValue.map(item => ({
       id: (item.label === item.value)? undefined : item.value,
       name: item.label,

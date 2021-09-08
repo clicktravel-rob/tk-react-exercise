@@ -15,10 +15,8 @@ const {
 
 function IngredientList(props) {
   if(!props.ingredients) {
-    console.log('no ingredients')
     return null;
   }
-  console.log(`ingredients: ${JSON.stringify(props.ingredients)}`)
   const list = props.ingredients.map((ingredient) =>
     <IngredientListItem key={ingredient.id}>{ingredient.name}</IngredientListItem>
   )

@@ -37,7 +37,6 @@ function RecipeComponent() {
     const getRecipes = async () => {
       try {
         const response = await getRecipesFromDb();
-        console.log(`GET recipes response = ${JSON.stringify(response)}`);
 
         if(!cancelled) {
           setSelected(false);
@@ -56,8 +55,6 @@ function RecipeComponent() {
         setUpdating(false);
         setRefreshing(false);
       }
-
-      console.log(`GET recipes DONE ${cancelled? '(after cancellation)':''}`);
     }
 
     getRecipes();
@@ -71,7 +68,7 @@ function RecipeComponent() {
     <ComponentWrapper>
       <Title>Recipes</Title>
       <Button href="#" onClick={(e) => setUpdating(true)}>Add recipe</Button>
-      <RecipeList recipes={recipes} setSelected={setSelected} setUpdating={setUpdating} recipeDbUpdated={recipeDbUpdated}/>
+      <RecipeList recipes={recipes} selected={selected} setSelected={setSelected} setUpdating={setUpdating} recipeDbUpdated={recipeDbUpdated}/>
       {
         updating &&
         <RecipeForm recipes={recipes} updating={updating} recipeDbUpdated={recipeDbUpdated} setUpdating={setUpdating}/>

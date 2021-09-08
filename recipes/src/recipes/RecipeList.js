@@ -21,26 +21,30 @@ const {
 
 function RecipeList(props) {
 
+  console.log(`RecipeList props: ${JSON.stringify(props)}`)
+
   const {
     recipes,
+    selected,
     setSelected,
     setUpdating,
     recipeDbUpdated
   } = props;
 
-  console.log(`RecipeList recipes: ${JSON.stringify(recipes)}`)
-
   async function deleteRecipe(id) {
-    console.log(`deleting recipe ${id}`);
     await deleteFromDb(id);
     recipeDbUpdated();
   }
 
   function RecipeListItem(props) {
-    return <RecipeTableRow>
+    const isSelected = (props.id === selected);
+
+    const updateSelection = () => setSelected( isSelected? false : props.id );
+
+    return <RecipeTableRow highlight={isSelected}>
       <RecipeTableNameItem>
         <Button as="a" href="#" onClick={
-          () => setSelected(props.id)
+          () => updateSelection()
         }>{props.name}</Button>
       </RecipeTableNameItem>
       <RecipeTableDescriptionItem>
@@ -56,7 +60,10 @@ function RecipeList(props) {
   };
 
   const listItems = recipes.map((recipe) =>
-    <RecipeListItem key={recipe.id} id={recipe.id} name={recipe.name} description={recipe.description}/>
+    <RecipeListItem key={recipe.id}
+                    id={recipe.id}
+                    name={recipe.name}
+                    description={recipe.description}/>
   );
 
   return <ComponentWrapper>

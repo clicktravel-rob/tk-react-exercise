@@ -26,7 +26,7 @@ const Button = styled.button`
 
 const RecipeTable = styled.div`
   border-radius: 3px;
-  border: 2px solid #8d64ed;
+  border: 2px solid thistle;
   width: 100%;
   margin: 20px auto;
   display: flex;
@@ -34,13 +34,14 @@ const RecipeTable = styled.div`
 `;
 
 const RecipeTableRow = styled.div`
-  border: 2px solid #a5bce7;
+    border: ${props => (props.highlight? '1px solid lightsteelblue' : '1px hidden gainsboro')
+  };
   display: flex;
   flex-direction: row;
 `;
 
 const RecipeTableItem = styled.div`
-  border: 2px solid lavender;
+  border: 1px solid thistle;
   border-collapse: collapse;
   padding: 2px;
   text-align: left;
