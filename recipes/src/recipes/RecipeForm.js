@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import axios from 'axios';
 import Creatable from 'react-select/creatable';
 
-import styles from "../styles"
-import axios from "axios";
-import useRecipeDb from "./useRecipeApi";
+import styles from '../styles';
+import findRecipe from "./findRecipe";
 
 const {
   ComponentWrapper
@@ -12,22 +12,35 @@ const {
 const RECIPE_LIST_URL = '/api/recipe/recipes/';
 
 function RecipeForm(props) {
+  console.log('RecipeForm rendering')
   const {
-    recipe: {
-      id,
-      name: initialName = "",
-      description: initialDescription = "",
-      ingredients: initialIngredients = [],
-    } = {},
+    recipes,
+    updating,
+    setUpdating,
+    setRefreshing
   } = props;
 
-  const isUpdating =  (id !== undefined) && (id !== null);
+  const recipe = findRecipe({recipes, id: updating});
+  console.log(`recipe for form: ${JSON.stringify(recipe)}`)
+
+  const {
+    id,
+    name: initialName,
+    description: initialDescription,
+    ingredients: initialIngredients = [],
+  } = recipe || {};
 
   const [name, setName] = useState(initialName);
   const [description, setDescription] = useState(initialDescription);
   const [ingredients, setIngredients] = useState(initialIngredients);
 
-  const [, reloadRecipes] = useRecipeDb();
+  console.log(`recipe state - name: ${name} description: ${description} ingredients: ${JSON.stringify(ingredients)}`)
+
+  const isExistingRecipe =  (id !== undefined) && (id !== null);
+
+  if(updating === false) {
+    return null;
+  }
 
   async function postRecipe(evt) {
     evt.preventDefault();
@@ -38,13 +51,16 @@ function RecipeForm(props) {
       ingredients,
     };
 
-    alert(`Submitting Recipe ${JSON.stringify(recipeUpdate)}`)
+    console.log(`Submitting ${isExistingRecipe? 'existing' : 'new'} recipe ${JSON.stringify(recipeUpdate)}`)
 
-    const result = await axios.post(RECIPE_LIST_URL, recipeUpdate);
+    const result = (isExistingRecipe
+      ? await axios.put(`${RECIPE_LIST_URL}${id}/`, recipeUpdate)
+      : await axios.post(RECIPE_LIST_URL, recipeUpdate));
 
-    console.log(`POST recipes result = ${JSON.stringify(result)}`)
+    console.log(`update recipes result = ${JSON.stringify(result)}`)
 
-    reloadRecipes();
+    setUpdating(false);
+    setRefreshing(true);
   }
 
   function onIngredientsChange(newValue, actionMeta) {
@@ -63,7 +79,7 @@ function RecipeForm(props) {
     setIngredients(replacementIngredients);
   };
 
-  const title = isUpdating? 'Edit Recipe' : 'Add Recipe';
+  const title = isExistingRecipe? 'Edit Recipe' : 'Add Recipe';
 
   const ingredientItems = ingredients.map(ingredient => ({
     value: ingredient.id,
@@ -83,17 +99,18 @@ function RecipeForm(props) {
         <li>
           <label>
             Description:
-            <textarea type="text" rows="6" value={description} onChange={e => setDescription(e.target.value)}/>
+            <textarea rows="6" value={description} onChange={e => setDescription(e.target.value)}/>
           </label>
         </li>
         <li>
           <label>
             Ingredients:
-            <Creatable options={ingredientItems} isMulti onChange={onIngredientsChange}/>
+            <Creatable isMulti options={ingredientItems} defaultValue={ingredientItems} onChange={onIngredientsChange}/>
           </label>
         </li>
         <li>
           <input type="submit" value="Submit" />
+          <input type="button" value="Cancel" onClick={() => setUpdating(false)}/>
         </li>
       </ul>
     </form>
