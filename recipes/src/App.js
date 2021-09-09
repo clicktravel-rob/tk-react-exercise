@@ -3,12 +3,16 @@ import RecipeComponent from './recipes/RecipeComponent';
 import styles from './styles';
 
 const {
-  StyledApp
+  Global,
+  StyledApp,
+  Title,
 } = styles;
 
 function App() {
   return (
     <StyledApp className="App">
+      <Global/>
+      <Title>Recipes</Title>
       <RecipeComponent/>
     </StyledApp>
   );

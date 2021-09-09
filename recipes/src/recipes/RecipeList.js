@@ -15,13 +15,11 @@ const {
   RecipeTableNameItem,
   RecipeTableDescriptionItem,
   RecipeTableButtonItem,
-  ComponentWrapper,
+  Box,
 } = styles;
 
 
 function RecipeList(props) {
-
-  console.log(`RecipeList props: ${JSON.stringify(props)}`)
 
   const {
     recipes,
@@ -51,10 +49,10 @@ function RecipeList(props) {
         {props.description}
       </RecipeTableDescriptionItem>
       <RecipeTableButtonItem>
-        <Button href="#" onClick={() => setUpdating(props.id)}>Edit Recipe</Button>
+        <Button href="#" onClick={() => setUpdating(props.id)}>Edit</Button>
       </RecipeTableButtonItem>
       <RecipeTableButtonItem>
-        <Button href="#" onClick={() => deleteRecipe(props.id)}>Delete Recipe</Button>
+        <Button href="#" onClick={() => deleteRecipe(props.id)}>Delete</Button>
       </RecipeTableButtonItem>
     </RecipeTableRow>;
   };
@@ -66,11 +64,11 @@ function RecipeList(props) {
                     description={recipe.description}/>
   );
 
-  return <ComponentWrapper>
+  return <Box>
     <RecipeTable>
       {listItems}
     </RecipeTable>
-  </ComponentWrapper>;
+  </Box>;
 };
 
 export default RecipeList;

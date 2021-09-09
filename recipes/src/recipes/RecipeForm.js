@@ -7,7 +7,15 @@ import recipesApi from "./recipesApi";
 
 
 const {
-  ComponentWrapper
+  Box,
+  FormTitle,
+  StyledForm,
+  FormContent,
+  StyledLabel,
+  StyledInput,
+  StyledTextArea,
+  StyledSubmitButton,
+  StyledCancelButton,
 } = styles;
 
 const {
@@ -24,7 +32,6 @@ function RecipeForm(props) {
   } = props;
 
   const recipe = findRecipe({recipes, id: updating});
-  console.log(`recipe for form: ${JSON.stringify(recipe)}`)
 
   const {
     id,
@@ -68,9 +75,6 @@ function RecipeForm(props) {
       name: item.label,
     }));
 
-    console.log(`Replacement ingredients:
-      ${JSON.stringify(replacementIngredients)}`);
-
     setIngredients(replacementIngredients);
   };
 
@@ -81,35 +85,35 @@ function RecipeForm(props) {
     label: ingredient.name,
   }));
 
-  return <ComponentWrapper>
-    <h2>{title}</h2>
-    <form onSubmit={postRecipe}>
-      <ul>
+  return <Box>
+    <FormTitle>{title}</FormTitle>
+    <StyledForm onSubmit={postRecipe}>
+      <FormContent>
         <li>
-          <label>
-            Name:
-            <input type="text" value={name} onChange={e => setName(e.target.value)}/>
-          </label>
+          <StyledLabel htmlFor="name">Name:</StyledLabel>
         </li>
         <li>
-          <label>
-            Description:
-            <textarea rows="6" value={description} onChange={e => setDescription(e.target.value)}/>
-          </label>
+          <StyledInput id="name" type="text" value={name} onChange={e => setName(e.target.value)}/>
         </li>
         <li>
-          <label>
-            Ingredients:
-            <Creatable isMulti options={ingredientItems} defaultValue={ingredientItems} onChange={onIngredientsChange}/>
-          </label>
+          <StyledLabel htmlFor="description">Description:</StyledLabel>
         </li>
         <li>
-          <input type="submit" value="Submit" />
-          <input type="button" value="Cancel" onClick={() => setUpdating(false)}/>
+          <StyledTextArea id="description" rows="6" value={description} onChange={e => setDescription(e.target.value)}/>
         </li>
-      </ul>
-    </form>
-  </ComponentWrapper>
+        <li>
+          <StyledLabel htmlFor="ingredients">Ingredients:</StyledLabel>
+        </li>
+        <li>
+          <Creatable id="ingredients" isMulti options={ingredientItems} defaultValue={ingredientItems} onChange={onIngredientsChange}/>
+        </li>
+        <li>
+          <StyledSubmitButton type="submit" value="Submit" />
+          <StyledCancelButton type="button" value="Cancel" onClick={() => setUpdating(false)}/>
+        </li>
+      </FormContent>
+    </StyledForm>
+  </Box>
 }
 
 export default RecipeForm;

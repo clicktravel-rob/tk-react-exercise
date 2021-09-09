@@ -9,9 +9,8 @@ import recipesApi from "./recipesApi";
 
 
 const {
-  ComponentWrapper,
-  Button,
-  Title,
+  Container,
+  AddButton,
 } = styles;
 
 const {
@@ -45,7 +44,7 @@ function RecipeComponent() {
       } catch(e) {
         if(!cancelled) {
           // TODO Handle error state
-          console.log(`GET recipes error: ${JSON.stringify(e)} ${
+          alert(`GET recipes error: ${JSON.stringify(e)} ${
             cancelled? 'after cancellation':''
           }`);
         }
@@ -62,22 +61,21 @@ function RecipeComponent() {
     return (() => {cancelled = true;});
   }, [refreshing]);
 
-  console.log(`RecipeComponent selected: ${selected} updating: ${updating} refreshing: ${refreshing}`);
-
   return (
-    <ComponentWrapper>
-      <Title>Recipes</Title>
-      <Button href="#" onClick={(e) => setUpdating(true)}>Add recipe</Button>
-      <RecipeList recipes={recipes} selected={selected} setSelected={setSelected} setUpdating={setUpdating} recipeDbUpdated={recipeDbUpdated}/>
-      {
-        updating &&
-        <RecipeForm recipes={recipes} updating={updating} recipeDbUpdated={recipeDbUpdated} setUpdating={setUpdating}/>
-      }
-      {
-        selected && !updating &&
-        <RecipeDetail recipes={recipes} selected={selected}/>
-      }
-    </ComponentWrapper>
+    <div>
+      <AddButton href="#" onClick={(e) => setUpdating(true)}>Add recipe</AddButton>
+      <Container>
+        {
+          updating &&
+          <RecipeForm recipes={recipes} updating={updating} recipeDbUpdated={recipeDbUpdated} setUpdating={setUpdating}/>
+        }
+        {
+          selected && !updating &&
+          <RecipeDetail recipes={recipes} selected={selected}/>
+        }
+        <RecipeList recipes={recipes} selected={selected} setSelected={setSelected} setUpdating={setUpdating} recipeDbUpdated={recipeDbUpdated}/>
+      </Container>
+    </div>
   );
 }
 

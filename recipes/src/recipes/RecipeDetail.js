@@ -37,7 +37,6 @@ function RecipeDetail(props) {
   const recipe = findRecipe({recipes, id: selected});
 
   if(!recipe) {
-    console.log('RecipeDetail - no recipe');
     return null;
   }
 
