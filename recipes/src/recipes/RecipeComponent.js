@@ -15,6 +15,8 @@ const {
 
 const {
   getRecipes: getRecipesFromDb,
+  deleteRecipe: deleteRecipeFromDb,
+  addOrUpdateRecipe: addOrUpdateRecipeInDb,
 } = recipesApi;
 
 
@@ -28,6 +30,16 @@ function RecipeComponent() {
   const recipeDbUpdated = () => {
     setUpdating(false);
     setRefreshing(true);
+  }
+
+  async function deleteRecipe(id) {
+    await deleteRecipeFromDb(id);
+    recipeDbUpdated();
+  }
+
+  async function addOrUpdateRecipe(recipe) {
+    await addOrUpdateRecipeInDb(recipe);
+    recipeDbUpdated();
   }
 
   useEffect(() => {
@@ -67,11 +79,11 @@ function RecipeComponent() {
       <Container>
         {
           updating &&
-          <RecipeForm recipes={recipes} updating={updating} setUpdating={setUpdating} recipeDbUpdated={recipeDbUpdated}/>
+          <RecipeForm recipes={recipes} updating={updating} setUpdating={setUpdating} addOrUpdateRecipe={addOrUpdateRecipe}/>
         }
         {
           selected && !updating &&
-          <RecipeDetail recipes={recipes} selected={selected} setUpdating={setUpdating} recipeDbUpdated={recipeDbUpdated}/>
+          <RecipeDetail recipes={recipes} selected={selected} setUpdating={setUpdating} deleteRecipe={deleteRecipe}/>
         }
         <RecipeList recipes={recipes} selected={selected} setSelected={setSelected}/>
       </Container>

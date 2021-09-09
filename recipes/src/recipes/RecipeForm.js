@@ -3,7 +3,6 @@ import Creatable from 'react-select/creatable';
 
 import styles from '../styles';
 import findRecipe from "./findRecipe";
-import recipesApi from "./recipesApi";
 
 
 const {
@@ -18,17 +17,12 @@ const {
   StyledCancelButton,
 } = styles;
 
-const {
-  addRecipe,
-  updateRecipe,
-} = recipesApi;
-
 function RecipeForm(props) {
   const {
     recipes,
     updating,
-    recipeDbUpdated,
     setUpdating,
+    addOrUpdateRecipe,
   } = props;
 
   const recipe = findRecipe({recipes, id: updating});
@@ -44,7 +38,6 @@ function RecipeForm(props) {
   const [description, setDescription] = useState(initialDescription);
   const [ingredients, setIngredients] = useState(initialIngredients);
 
-  const isExistingRecipe =  (id !== undefined) && (id !== null);
 
   if(updating === false) {
     return null;
@@ -60,13 +53,7 @@ function RecipeForm(props) {
       ingredients,
     };
 
-    if(isExistingRecipe) {
-      await updateRecipe(recipeUpdate);
-    } else {
-      await addRecipe(recipeUpdate);
-    }
-
-    recipeDbUpdated();
+    addOrUpdateRecipe(recipeUpdate);
   }
 
   function onIngredientsChange(newValue, actionMeta) {
@@ -78,6 +65,7 @@ function RecipeForm(props) {
     setIngredients(replacementIngredients);
   };
 
+  const isExistingRecipe =  (id !== undefined) && (id !== null);
   const title = isExistingRecipe? 'Edit Recipe' : 'Add Recipe';
 
   const ingredientItems = ingredients.map(ingredient => ({

@@ -2,7 +2,6 @@ import React from "react";
 
 import styles from '../styles'
 import findRecipe from './findRecipe'
-import recipesApi from './recipesApi';
 
 const {
   RecipeDetailContainer,
@@ -14,10 +13,6 @@ const {
   RecipeDetailButtons,
   RecipeDetailButton,
 } = styles;
-
-const {
-  deleteRecipe: deleteFromDb,
-} = recipesApi;
 
 
 function IngredientList(props) {
@@ -40,13 +35,8 @@ function RecipeDetail(props) {
     recipes,
     selected,
     setUpdating,
-    recipeDbUpdated,
+    deleteRecipe,
   } = props;
-
-  async function deleteRecipe(id) {
-    await deleteFromDb(id);
-    recipeDbUpdated();
-  }
 
   const recipe = findRecipe({recipes, id: selected});
 
