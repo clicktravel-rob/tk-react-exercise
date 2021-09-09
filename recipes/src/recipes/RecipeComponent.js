@@ -67,13 +67,13 @@ function RecipeComponent() {
       <Container>
         {
           updating &&
-          <RecipeForm recipes={recipes} updating={updating} recipeDbUpdated={recipeDbUpdated} setUpdating={setUpdating}/>
+          <RecipeForm recipes={recipes} updating={updating} setUpdating={setUpdating} recipeDbUpdated={recipeDbUpdated}/>
         }
         {
           selected && !updating &&
-          <RecipeDetail recipes={recipes} selected={selected}/>
+          <RecipeDetail recipes={recipes} selected={selected} setUpdating={setUpdating} recipeDbUpdated={recipeDbUpdated}/>
         }
-        <RecipeList recipes={recipes} selected={selected} setSelected={setSelected} setUpdating={setUpdating} recipeDbUpdated={recipeDbUpdated}/>
+        <RecipeList recipes={recipes} selected={selected} setSelected={setSelected}/>
       </Container>
     </div>
   );

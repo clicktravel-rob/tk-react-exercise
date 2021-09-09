@@ -2,11 +2,6 @@ import React from 'react';
 
 import '../App.css';
 import styles from '../styles';
-import recipesApi from './recipesApi';
-
-const {
-  deleteRecipe: deleteFromDb,
-} = recipesApi;
 
 const {
   Button,
@@ -14,7 +9,6 @@ const {
   RecipeTableRow,
   RecipeTableNameItem,
   RecipeTableDescriptionItem,
-  RecipeTableButtonItem,
   Box,
 } = styles;
 
@@ -25,14 +19,7 @@ function RecipeList(props) {
     recipes,
     selected,
     setSelected,
-    setUpdating,
-    recipeDbUpdated
   } = props;
-
-  async function deleteRecipe(id) {
-    await deleteFromDb(id);
-    recipeDbUpdated();
-  }
 
   function RecipeListItem(props) {
     const isSelected = (props.id === selected);
@@ -48,12 +35,6 @@ function RecipeList(props) {
       <RecipeTableDescriptionItem>
         {props.description}
       </RecipeTableDescriptionItem>
-      <RecipeTableButtonItem>
-        <Button href="#" onClick={() => setUpdating(props.id)}>Edit</Button>
-      </RecipeTableButtonItem>
-      <RecipeTableButtonItem>
-        <Button href="#" onClick={() => deleteRecipe(props.id)}>Delete</Button>
-      </RecipeTableButtonItem>
     </RecipeTableRow>;
   };
 

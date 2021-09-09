@@ -2,6 +2,7 @@ import React from "react";
 
 import styles from '../styles'
 import findRecipe from './findRecipe'
+import recipesApi from './recipesApi';
 
 const {
   RecipeDetailContainer,
@@ -10,7 +11,13 @@ const {
   IngredientListItem,
   IngredientListBox,
   IngredientListContainer,
+  RecipeDetailButtons,
+  RecipeDetailButton,
 } = styles;
+
+const {
+  deleteRecipe: deleteFromDb,
+} = recipesApi;
 
 
 function IngredientList(props) {
@@ -32,7 +39,14 @@ function RecipeDetail(props) {
   const {
     recipes,
     selected,
+    setUpdating,
+    recipeDbUpdated,
   } = props;
+
+  async function deleteRecipe(id) {
+    await deleteFromDb(id);
+    recipeDbUpdated();
+  }
 
   const recipe = findRecipe({recipes, id: selected});
 
@@ -44,6 +58,11 @@ function RecipeDetail(props) {
     <RecipeDetailName>{recipe.name}</RecipeDetailName>
     <RecipeDetailDescription>{recipe.description}</RecipeDetailDescription>
     <IngredientList ingredients={recipe.ingredients}/>
+    <RecipeDetailButtons>
+      <RecipeDetailButton href="#" onClick={() => setUpdating(recipe.id)}>Edit</RecipeDetailButton>
+      <RecipeDetailButton href="#" onClick={() => deleteRecipe(recipe.id)}>Delete</RecipeDetailButton>
+    </RecipeDetailButtons>
+
   </RecipeDetailContainer>;
 };
 

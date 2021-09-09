@@ -101,7 +101,7 @@ const RecipeTable = styled(Box)`
   border-radius: ${px2vw(3)};
   border: 2px solid thistle;
   width: 100%;
-  margin: ${px2vw(10)} auto;
+  margin: 3px auto;
   display: flex;
   flex-flow: column wrap;
 `;
@@ -109,7 +109,7 @@ const RecipeTable = styled(Box)`
 const RecipeTableRow = styled.div`
     border: ${props => (
       props.highlight
-        ? '1px solid lightsteelblue' 
+        ? '1px solid darkslateblue' 
         : '1px hidden gainsboro')
   };
   display: flex;
@@ -131,10 +131,6 @@ const RecipeTableDescriptionItem = styled(RecipeTableItem)`
   flex: 1 1 auto
 `;
 
-const RecipeTableButtonItem = styled(RecipeTableItem)`
-  flex: 0 1  auto
-`;
-
 /*
  * Recipe Detail
  */
@@ -151,6 +147,7 @@ const RecipeDetailName = styled.h2`
 `;
 
 const RecipeDetailDescription = styled.p`
+  padding: 1em;
 `;
 
 const IngredientListBox = styled.div`
@@ -158,7 +155,8 @@ const IngredientListBox = styled.div`
 `;
 
 const IngredientListContainer = styled.ul`
-  list-style-type: none;
+  list-style-type: disc;
+  padding: 1em;
 `;
 
 const IngredientListItem = styled.li`
@@ -166,6 +164,16 @@ const IngredientListItem = styled.li`
 
 const IngredientListSelect = styled(Creatable)`
   flex: 0 0  ${px2vw(200)}
+`;
+
+const RecipeDetailButtons = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding: 1em;
+`;
+
+const RecipeDetailButton = styled(Button)`
+  margin: 2px;
 `;
 
 /*
@@ -238,7 +246,6 @@ const StyledCancelButton = styled.input.attrs({
   display: inline-block;
 `;
 
-
 const styles = {
   Global,
   Container,
@@ -251,7 +258,6 @@ const styles = {
   RecipeTableRow,
   RecipeTableNameItem,
   RecipeTableDescriptionItem,
-  RecipeTableButtonItem,
   RecipeDetailContainer,
   RecipeDetailName,
   RecipeDetailDescription,
@@ -259,6 +265,8 @@ const styles = {
   IngredientListItem,
   IngredientListContainer,
   IngredientListSelect,
+  RecipeDetailButtons,
+  RecipeDetailButton,
   StyledForm,
   FormTitle,
   FormContent,
