@@ -1,7 +1,5 @@
-import { act, render, fireEvent, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event'
+import {render, fireEvent, screen, act} from '@testing-library/react';
 import selectEvent from "react-select-event";
-import Creatable from 'react-select'
 
 import RecipeForm from './RecipeForm';
 import testData from '../../data/testData';
@@ -18,13 +16,8 @@ const fillOutForm = async (screen, {
   description = 'some description',
   ingredients = [],
 } = {}) => {
-  const nameInput = screen.getByLabelText('name', {exact: false});
-  const descriptionInput = screen.getByLabelText('description', {exact: false});
   const ingredientsSelectBox = screen.getByLabelText('ingredients');
   expect(ingredientsSelectBox).not.toBeNull();
-
-  //userEvent.type(screen.getByLabelText('name', {exact: false}), `${name}{enter}`);
-  // userEvent.type(descriptionInput, `${description}{enter}`);
 
   fireEvent.change(screen.getByLabelText('name', {exact: false}), {
     target: {
@@ -33,18 +26,20 @@ const fillOutForm = async (screen, {
   });
 
   fireEvent.change(screen.getByLabelText('description', {exact: false}), {
-      target: {
-        value: description
-      }
-    });
+    target: {
+      value: description
+    }
+  });
 
-    return selectEvent.create(ingredientsSelectBox, ingredients);
+  return ingredients.reduce(
+    async (previousValue, name) => {
+      await previousValue;
+
+      return selectEvent.create(ingredientsSelectBox, name);
+    },
+    Promise.resolve(),
+  );
 }
-
-const clearForm = async (screen) => fillOutForm(screen, {
-  name: '',
-  description:'',
-});
 
 
 describe('RecipeForm', () => {
@@ -100,7 +95,7 @@ describe('RecipeForm', () => {
     expect(descriptionInput).toHaveValue('');
 
     const ingredientsSelectBox = screen.getByTestId('ingredients-select-box');
-    const emptyIngredientsSelect = screen.getByText(INGREDIENTS_PLACEHOLDER , {
+    const emptyIngredientsSelect = screen.getByText(INGREDIENTS_PLACEHOLDER, {
       exact: false
     });
     expect(ingredientsSelectBox).toContainElement(emptyIngredientsSelect);
@@ -109,14 +104,33 @@ describe('RecipeForm', () => {
     expect(mockAddOrUpdateRecipe).not.toHaveBeenCalled();
   });
 
-  // test('it should call setUpdating(false) when the cancel button is clicked', async () => {
-  // });
-
-  test('it should pass the form details to addOrUpdateRecipe() when the submit button is clicked', async () => {
-    const updating = true;
+  test('it should call setUpdating(false) when the cancel button is clicked', () => {
+    const updating = 2;
+    const recipeUpdating = recipe2;
 
     const mockSetUpdating = jest.fn();
     const mockAddOrUpdateRecipe = jest.fn();
+
+    const component = render(<RecipeForm recipes={recipes}
+                                         updating={updating}
+                                         setUpdating={mockSetUpdating}
+                                         addOrUpdateRecipe={mockAddOrUpdateRecipe}/>);
+
+    const cancelButton = screen.getByText('Cancel');
+    expect(cancelButton).not.toBeNull();
+    fireEvent.click(cancelButton);
+
+    expect(mockSetUpdating).toHaveBeenCalledWith(false);
+    expect(mockAddOrUpdateRecipe).not.toHaveBeenCalled();
+  });
+
+  test('it should pass the new recipe to addOrUpdateRecipe() when the submit button is clicked', async () => {
+    const updating = true;
+
+    const addOrUpdatePromise = Promise.resolve();
+
+    const mockAddOrUpdateRecipe = jest.fn(async () => addOrUpdatePromise);
+    const mockSetUpdating = jest.fn();
 
     const component = render(<RecipeForm recipes={recipes}
                                          updating={updating}
@@ -136,18 +150,58 @@ describe('RecipeForm', () => {
       ingredients,
     });
 
-    const button = screen.getByText('Submit');
-    expect(button).not.toBeNull();
-    fireEvent.click(button);
+    const submitButton = screen.getByText('Submit');
+    expect(submitButton).not.toBeNull();
+    fireEvent.click(submitButton);
 
-    // expect(mockSetUpdating).toHaveBeenCalledWith(false);
-    //
-    // const expectedRecipe = {
-    //   name,
-    //   description,
-    //   ingredients,
-    // }
-    // expect(mockAddOrUpdateRecipe).toHaveBeenCalledWith(expectedRecipe);
+    await act(() => addOrUpdatePromise);
+
+    const expectedRecipe = {
+      name,
+      description,
+      ingredients: ingredients.map((name) => ({
+        id: undefined,
+        name,
+      })),
+    }
+    expect(mockAddOrUpdateRecipe).toHaveBeenCalledWith(expectedRecipe);
+
+    expect(mockSetUpdating).not.toHaveBeenCalled();
+  });
+
+  test('it should pass the updated recipe to addOrUpdateRecipe() when the submit button is clicked', async () => () => {
+    const updating = 2;
+    const recipeUpdating = recipe2;
+
+    const mockSetUpdating = jest.fn();
+    const mockAddOrUpdateRecipe = jest.fn();
+
+    const component = render(<RecipeForm recipes={recipes}
+                                         updating={updating}
+                                         setUpdating={mockSetUpdating}
+                                         addOrUpdateRecipe={mockAddOrUpdateRecipe}/>);
+
+    const newName = `Vegan ${recipeUpdating.name}`;
+    const newDescription = `${recipeUpdating.description} like a boss`;
+    const newIngredients = recipeUpdating.ingredients.map((recipe) => ({
+      ...recipe,
+      name: `Vegan ${recipe.name}`
+    }));
+
+    const updatedRecipe = {
+      id: recipe2.id,
+      name: newName,
+      description: newDescription,
+      ingredients: newIngredients,
+    };
+
+    const submitButton = screen.getByText('Submit');
+    expect(submitButton).not.toBeNull();
+    fireEvent.click(submitButton);
+
+    expect(mockSetUpdating).toHaveBeenCalledWith(false);
+
+    expect(mockAddOrUpdateRecipe).toHaveBeenCalledWith(updatedRecipe);
   });
 
 });

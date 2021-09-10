@@ -29,8 +29,8 @@ function RecipeForm(props) {
 
   const {
     id,
-    name: initialName,
-    description: initialDescription,
+    name: initialName = '',
+    description: initialDescription = '',
     ingredients: initialIngredients = [],
   } = recipe || {};
 
@@ -80,7 +80,7 @@ function RecipeForm(props) {
           <StyledLabel htmlFor="name">Name:</StyledLabel>
         </li>
         <li>
-          <StyledInput id="name" type="text" role="input" value={name} onChange={e => setName(e.target.value)}/>
+          <StyledInput id="name" type="text" value={name} onChange={e => setName(e.target.value)}/>
         </li>
         <li>
           <StyledLabel htmlFor="description">Description:</StyledLabel>
