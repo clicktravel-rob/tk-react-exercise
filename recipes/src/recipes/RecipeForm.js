@@ -38,7 +38,6 @@ function RecipeForm(props) {
   const [description, setDescription] = useState(initialDescription);
   const [ingredients, setIngredients] = useState(initialIngredients);
 
-
   if(updating === false) {
     return null;
   }
@@ -75,25 +74,30 @@ function RecipeForm(props) {
 
   return <Box>
     <FormTitle>{title}</FormTitle>
-    <StyledForm onSubmit={postRecipe}>
+    <StyledForm role="form" name="recipe-form" onSubmit={postRecipe}>
       <FormContent>
         <li>
           <StyledLabel htmlFor="name">Name:</StyledLabel>
         </li>
         <li>
-          <StyledInput id="name" type="text" value={name} onChange={e => setName(e.target.value)}/>
+          <StyledInput id="name" type="text" role="input" value={name} onChange={e => setName(e.target.value)}/>
         </li>
         <li>
           <StyledLabel htmlFor="description">Description:</StyledLabel>
         </li>
         <li>
-          <StyledTextArea id="description" rows="6" value={description} onChange={e => setDescription(e.target.value)}/>
+          <StyledTextArea id="description" rows="6" value={description}
+                          onChange={e => setDescription(e.target.value)}/>
         </li>
         <li>
           <StyledLabel htmlFor="ingredients">Ingredients:</StyledLabel>
         </li>
-        <li>
-          <Creatable id="ingredients" isMulti options={ingredientItems} defaultValue={ingredientItems} onChange={onIngredientsChange}/>
+        <li data-testid="ingredients-select-box">
+          <Creatable isMulti role="select" aria-label="ingredients"
+                     id="ingredients" name="ingredients" inputId="ingredients"
+                     placeholder="Select ingredients..."
+                     options={ingredientItems} defaultValue={ingredientItems}
+                     onChange={onIngredientsChange}/>
         </li>
         <li>
           <StyledSubmitButton type="submit" value="Submit" />
