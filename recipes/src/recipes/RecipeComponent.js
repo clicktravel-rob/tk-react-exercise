@@ -14,13 +14,18 @@ const {
 } = styles;
 
 const {
-  getRecipes: getRecipesFromDb,
-  deleteRecipe: deleteRecipeFromDb,
-  addOrUpdateRecipe: addOrUpdateRecipeInDb,
+  getRecipes: defaultGetRecipesFromDb,
+  deleteRecipe: defaultDeleteRecipeFromDb,
+  addOrUpdateRecipe: defaultAddOrUpdateRecipeInDb,
 } = recipesApi;
 
 
-function RecipeComponent() {
+function RecipeComponent(props) {
+  const {
+    getRecipesFromDb = defaultGetRecipesFromDb,
+    deleteRecipeFromDb = defaultDeleteRecipeFromDb,
+    addOrUpdateRecipeInDb = defaultAddOrUpdateRecipeInDb,
+  } = props;
 
   const [recipes, setRecipes] = useState([]);
   const [selected, setSelected] = useState(false);
@@ -71,7 +76,12 @@ function RecipeComponent() {
     getRecipes();
 
     return (() => {cancelled = true;});
-  }, [refreshing]);
+  }, [
+    refreshing,
+    getRecipesFromDb,
+    deleteRecipeFromDb,
+    addOrUpdateRecipeInDb,
+  ]);
 
   return (
     <div>
