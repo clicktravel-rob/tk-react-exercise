@@ -216,6 +216,7 @@ const StyledInput = styled.input`
 
 
 const StyledTextArea = styled.textarea`
+  resize: none;
   font: 1em sans-serif;
   width: 100%;
   box-sizing: border-box;

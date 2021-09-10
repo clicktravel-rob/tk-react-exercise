@@ -12,7 +12,7 @@ function App() {
   return (
     <StyledApp className="App">
       <Global/>
-      <Title>Recipes</Title>
+      <Title>Recipes Database</Title>
       <RecipeComponent/>
     </StyledApp>
   );
