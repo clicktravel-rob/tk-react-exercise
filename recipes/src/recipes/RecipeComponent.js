@@ -30,11 +30,11 @@ function RecipeComponent(props) {
   const [recipes, setRecipes] = useState([]);
   const [selected, setSelected] = useState(false);
   const [updating, setUpdating] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
+  const [showRecipeForm, setShowRecipeForm] = useState(false);
 
   const recipeDbUpdated = () => {
     setUpdating(false);
-    setRefreshing(true);
+    setShowRecipeForm(true);
   }
 
   async function deleteRecipe(id) {
@@ -57,7 +57,7 @@ function RecipeComponent(props) {
         alert(`GET recipes error: ${JSON.stringify(e)}`);
       } finally {
         setUpdating(false);
-        setRefreshing(false);
+        setShowRecipeForm(false);
       }
     }
 
@@ -65,7 +65,7 @@ function RecipeComponent(props) {
 
     return;
   }, [
-    refreshing,
+    showRecipeForm,
     getRecipesFromDb,
     deleteRecipeFromDb,
     addOrUpdateRecipeInDb,
