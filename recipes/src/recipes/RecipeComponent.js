@@ -47,35 +47,23 @@ function RecipeComponent(props) {
     recipeDbUpdated();
   }
 
-  useEffect(() => {
-    let cancelled = false;
-
+  useEffect(async () => {
     const getRecipes = async () => {
       try {
         const response = await getRecipesFromDb();
-
-        if(!cancelled) {
-          setSelected(false);
-          setRecipes(response.data);
-        }
+        setSelected(false);
+        setRecipes(response.data);
       } catch(e) {
-        if(!cancelled) {
-          // TODO Handle error state
-          alert(`GET recipes error: ${JSON.stringify(e)} ${
-            cancelled? 'after cancellation':''
-          }`);
-        }
-      }
-
-      if(!cancelled) {
+        alert(`GET recipes error: ${JSON.stringify(e)}`);
+      } finally {
         setUpdating(false);
         setRefreshing(false);
       }
     }
 
-    getRecipes();
+    await getRecipes();
 
-    return (() => {cancelled = true;});
+    return;
   }, [
     refreshing,
     getRecipesFromDb,
