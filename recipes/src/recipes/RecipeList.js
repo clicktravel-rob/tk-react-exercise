@@ -1,13 +1,10 @@
 import React from 'react';
 
 import styles from '../styles';
+import RecipeListItem from './RecipeListItem';
 
 const {
-  Button,
   RecipeTable,
-  RecipeTableRow,
-  RecipeTableNameItem,
-  RecipeTableDescriptionItem,
   Box,
 } = styles;
 
@@ -16,26 +13,7 @@ function RecipeList(props) {
 
   const {
     recipes,
-    selected,
-    setSelected,
   } = props;
-
-  function RecipeListItem(props) {
-    const isSelected = (props.id === selected);
-
-    const updateSelection = () => setSelected( isSelected? false : props.id );
-
-    return <RecipeTableRow highlight={isSelected}>
-      <RecipeTableNameItem>
-        <Button as="a" href="#" onClick={
-          () => updateSelection()
-        }>{props.name}</Button>
-      </RecipeTableNameItem>
-      <RecipeTableDescriptionItem>
-        {props.description}
-      </RecipeTableDescriptionItem>
-    </RecipeTableRow>;
-  };
 
   const listItems = recipes.map((recipe) =>
     <RecipeListItem key={recipe.id}
