@@ -1,33 +1,16 @@
 import React from "react";
 
 import styles from '../styles'
+import IngredientList from './IngredientList'
 import findRecipe from './findRecipe'
 
 const {
   RecipeDetailContainer,
   RecipeDetailName,
   RecipeDetailDescription,
-  IngredientListItem,
-  IngredientListBox,
-  IngredientListContainer,
   RecipeDetailButtons,
   RecipeDetailButton,
 } = styles;
-
-
-function IngredientList(props) {
-  if(!props.ingredients) {
-    return null;
-  }
-  const list = props.ingredients.map((ingredient) =>
-    <IngredientListItem key={ingredient.id}>{ingredient.name}</IngredientListItem>
-  )
-  return <IngredientListBox>
-    <IngredientListContainer>
-      {list}
-    </IngredientListContainer>
-  </IngredientListBox>
-};
 
 
 function RecipeDetail(props) {
