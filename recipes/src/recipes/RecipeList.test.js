@@ -19,8 +19,8 @@ describe('RecipeList', () => {
                                          setSelected={mockSetSelected}/>);
 
     recipes.map(({id, name, description, ingredients}) => {
-      expect(screen.getByText(name)).not.toBeNull();
-      expect(screen.getByText(description)).not.toBeNull();
+      expect(screen.getByText(name)).toBeInTheDocument();
+      expect(screen.getByText(description)).toBeInTheDocument();
     });
 
     expect(mockSetSelected).not.toHaveBeenCalled();
@@ -37,7 +37,7 @@ describe('RecipeList', () => {
     const selectedRecipe = recipe2;
 
     const recipeLink = screen.getByText(selectedRecipe.name);
-    expect(recipeLink).not.toBeNull();
+    expect(recipeLink).toBeInTheDocument();
     fireEvent.click(recipeLink);
 
     expect(mockSetSelected).toHaveBeenCalledWith(recipe2.id);
@@ -54,7 +54,7 @@ describe('RecipeList', () => {
     const selectedRecipe = recipe2;
 
     const recipeLink = screen.getByText(selectedRecipe.name);
-    expect(recipeLink).not.toBeNull();
+    expect(recipeLink).toBeInTheDocument();
     fireEvent.click(recipeLink);
 
     expect(mockSetSelected).toHaveBeenCalledWith(false);

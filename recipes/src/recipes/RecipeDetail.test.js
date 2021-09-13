@@ -19,10 +19,10 @@ describe('RecipeDetail', () => {
                          setUpdating={mockSetUpdating}
                          deleteRecipe={mockDeleteReipe}/>);
 
-    expect(screen.getByText(recipe2.name)).not.toBeNull();
-    expect(screen.getByText(recipe2.description)).not.toBeNull();
+    expect(screen.getByText(recipe2.name)).toBeInTheDocument();
+    expect(screen.getByText(recipe2.description)).toBeInTheDocument();
 
-    recipe2.ingredients.map(({name}) => expect(screen.getByText(name)).not.toBeNull() );
+    recipe2.ingredients.map(({name}) => expect(screen.getByText(name)).toBeInTheDocument() );
 
     expect(mockSetUpdating).not.toHaveBeenCalled();
     expect(mockDeleteReipe).not.toHaveBeenCalled();
@@ -39,7 +39,7 @@ describe('RecipeDetail', () => {
 
     const button = screen.getByText('Edit');
 
-    expect(button).not.toBeNull();
+    expect(button).toBeInTheDocument();
     fireEvent.click(button);
 
     expect(mockSetUpdating).toHaveBeenCalledWith(recipe2.id);
@@ -56,7 +56,7 @@ describe('RecipeDetail', () => {
                          deleteRecipe={mockDeleteReipe}/>);
 
     const button = screen.getByText('Delete');
-    expect(button).not.toBeNull();
+    expect(button).toBeInTheDocument();
     fireEvent.click(button);
 
     expect(mockDeleteReipe).toHaveBeenCalledWith(recipe2.id);

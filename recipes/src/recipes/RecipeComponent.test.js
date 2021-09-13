@@ -27,8 +27,8 @@ describe('RecipeComponent', () => {
     await act(() => promise);
 
     recipes.map(({id, name, description, ingredients}) => {
-      expect(screen.getByText(name)).not.toBeNull();
-      expect(screen.getByText(description)).not.toBeNull();
+      expect(screen.getByText(name)).toBeInTheDocument();
+      expect(screen.getByText(description)).toBeInTheDocument();
     });
 
     expect(getRecipesFromDb).toHaveBeenCalled();
@@ -53,11 +53,11 @@ describe('RecipeComponent', () => {
     const selectedRecipe = recipe2;
 
     const recipeLink = screen.getByText(selectedRecipe.name);
-    expect(recipeLink).not.toBeNull();
+    expect(recipeLink).toBeInTheDocument();
     fireEvent.click(recipeLink);
 
     // The recipe detail should show the ingredients
-    recipe2.ingredients.map(({name}) => expect(screen.getByText(name)).not.toBeNull() );
+    recipe2.ingredients.map(({name}) => expect(screen.getByText(name)).toBeInTheDocument() );
 
     expect(getRecipesFromDb).toHaveBeenCalled();
     expect(deleteRecipeFromDb).not.toHaveBeenCalled();
@@ -81,12 +81,12 @@ describe('RecipeComponent', () => {
     const selectedRecipe = recipe2;
 
     const recipeLink = screen.getByText(selectedRecipe.name);
-    expect(recipeLink).not.toBeNull();
+    expect(recipeLink).toBeInTheDocument();
     fireEvent.click(recipeLink);
 
     // The recipe detail should show the delete button
     const button = screen.getByText('Delete');
-    expect(button).not.toBeNull();
+    expect(button).toBeInTheDocument();
 
     fireEvent.click(recipeLink);
 
@@ -118,11 +118,11 @@ describe('RecipeComponent', () => {
     const selectedRecipe = recipe2;
 
     const recipeLink = screen.getByText(selectedRecipe.name);
-    expect(recipeLink).not.toBeNull();
+    expect(recipeLink).toBeInTheDocument();
     fireEvent.click(recipeLink);
 
     const button = screen.getByText('Delete');
-    expect(button).not.toBeNull();
+    expect(button).toBeInTheDocument();
     fireEvent.click(button);
 
     // Wait for recipe to be deleted from backend
@@ -150,15 +150,15 @@ describe('RecipeComponent', () => {
     const selectedRecipe = recipe2;
 
     const recipeLink = screen.getByText(selectedRecipe.name);
-    expect(recipeLink).not.toBeNull();
+    expect(recipeLink).toBeInTheDocument();
     fireEvent.click(recipeLink);
 
     const button = screen.getByText('Edit');
-    expect(button).not.toBeNull();
+    expect(button).toBeInTheDocument();
     fireEvent.click(button);
 
     const ingredientsSelectBox = screen.getByTestId('ingredients-select-box');
-    expect(ingredientsSelectBox).not.toBeNull();
+    expect(ingredientsSelectBox).toBeInTheDocument();
 
     expect(getRecipesFromDb).toHaveBeenCalled();
     expect(deleteRecipeFromDb).not.toHaveBeenCalled();
@@ -182,11 +182,11 @@ describe('RecipeComponent', () => {
     await act(() => getRecipesPromise);
 
     const button = screen.getByText('Add recipe');
-    expect(button).not.toBeNull();
+    expect(button).toBeInTheDocument();
     fireEvent.click(button);
 
     const ingredientsSelectBox = screen.getByTestId('ingredients-select-box');
-    expect(ingredientsSelectBox).not.toBeNull();
+    expect(ingredientsSelectBox).toBeInTheDocument();
 
     expect(getRecipesFromDb).toHaveBeenCalled();
     expect(deleteRecipeFromDb).not.toHaveBeenCalled();

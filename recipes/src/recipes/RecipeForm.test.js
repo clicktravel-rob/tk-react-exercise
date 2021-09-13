@@ -17,7 +17,7 @@ const fillOutForm = async (screen, {
   ingredients = [],
 } = {}) => {
   const ingredientsSelectBox = screen.getByLabelText('ingredients');
-  expect(ingredientsSelectBox).not.toBeNull();
+  expect(ingredientsSelectBox).toBeInTheDocument();
 
   fireEvent.change(screen.getByLabelText('name', {exact: false}), {
     target: {
@@ -57,12 +57,12 @@ describe('RecipeForm', () => {
                        addOrUpdateRecipe={mockAddOrUpdateRecipe}/>);
 
     const nameInputByLabel = screen.getByLabelText('name', {exact: false});
-    expect(nameInputByLabel).not.toBeNull();
+    expect(nameInputByLabel).toBeInTheDocument();
     const nameInput = screen.getByDisplayValue(recipeUpdating.name);
     expect(nameInputByLabel).toEqual(nameInput);
 
     const descriptionInputByLabel = screen.getByLabelText('description', {exact: false});
-    expect(descriptionInputByLabel).not.toBeNull();
+    expect(descriptionInputByLabel).toBeInTheDocument();
     const descriptionInput = screen.getByDisplayValue(recipeUpdating.description);
     expect(descriptionInputByLabel).toEqual(descriptionInput);
 
@@ -87,11 +87,11 @@ describe('RecipeForm', () => {
                                          addOrUpdateRecipe={mockAddOrUpdateRecipe}/>);
 
     const nameInput = screen.getByLabelText('name', {exact: false});
-    expect(nameInput).not.toBeNull();
+    expect(nameInput).toBeInTheDocument();
     expect(nameInput).toHaveValue('');
 
     const descriptionInput = screen.getByLabelText('description', {exact: false});
-    expect(descriptionInput).not.toBeNull();
+    expect(descriptionInput).toBeInTheDocument();
     expect(descriptionInput).toHaveValue('');
 
     const ingredientsSelectBox = screen.getByTestId('ingredients-select-box');
@@ -117,7 +117,7 @@ describe('RecipeForm', () => {
                                          addOrUpdateRecipe={mockAddOrUpdateRecipe}/>);
 
     const cancelButton = screen.getByText('Cancel');
-    expect(cancelButton).not.toBeNull();
+    expect(cancelButton).toBeInTheDocument();
     fireEvent.click(cancelButton);
 
     expect(mockSetUpdating).toHaveBeenCalledWith(false);
@@ -151,7 +151,7 @@ describe('RecipeForm', () => {
     });
 
     const submitButton = screen.getByText('Submit');
-    expect(submitButton).not.toBeNull();
+    expect(submitButton).toBeInTheDocument();
     fireEvent.click(submitButton);
 
     await act(() => addOrUpdatePromise);
@@ -196,7 +196,7 @@ describe('RecipeForm', () => {
     };
 
     const submitButton = screen.getByText('Submit');
-    expect(submitButton).not.toBeNull();
+    expect(submitButton).toBeInTheDocument();
     fireEvent.click(submitButton);
 
     expect(mockSetUpdating).toHaveBeenCalledWith(false);
