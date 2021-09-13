@@ -65,6 +65,7 @@ const Box = styled.div`
 */
 
 const StyledApp = styled.section`
+  text-align: center;
   padding: 4em;
   background: ivory;
   display: flex;
